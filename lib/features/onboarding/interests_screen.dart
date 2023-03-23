@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
@@ -125,10 +124,21 @@ class InterestsScreen extends StatelessWidget {
             left: Sizes.size24,
             right: Sizes.size24,
           ),
-          child: CupertinoButton(
-            onPressed: () {},
-            color: Theme.of(context).primaryColor,
-            child: const Text("Next"),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: Sizes.size20,
+            ),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+            ),
+            child: const Text(
+              'Next',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: Sizes.size16,
+              ),
+            ),
           ),
         ),
       ),
