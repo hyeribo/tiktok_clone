@@ -38,6 +38,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: _selectedIndex == 0
+          ? Colors.black
+          : Colors
+              .white, //Home 화면에서 화면을 아래로 잡아당겨 indicator가 나타날때의 배경화면 색을 검정색으로 변경.
       body: Stack(
         children: [
           Offstage(
