@@ -92,6 +92,8 @@ class _VideoPostState extends State<VideoPost>
       _onTogglePause();
     }
     await showModalBottomSheet(
+      backgroundColor: Colors
+          .transparent, // 배경을 투명색으로 지정해서 VideoComment의 Scaffold에 borderRadius 적용
       context: context,
       builder: (context) => const VideoComments(),
     );
