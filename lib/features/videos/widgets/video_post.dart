@@ -95,6 +95,8 @@ class _VideoPostState extends State<VideoPost>
       backgroundColor: Colors
           .transparent, // 배경을 투명색으로 지정해서 VideoComment의 Scaffold에 borderRadius 적용
       context: context,
+      isScrollControlled:
+          true, // bottomSheet의 사이즈를 바꿀 수 있게 & 안에서 ListView 사용 가능하게 해줌
       builder: (context) => const VideoComments(),
     );
     _onTogglePause();
