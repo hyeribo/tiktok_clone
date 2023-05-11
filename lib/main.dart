@@ -30,6 +30,8 @@ class TikTokApp extends StatelessWidget {
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Color(0xFFE9435A),
         ),
+        splashColor: Colors.transparent, // 클릭시 애니메이션 색
+        highlightColor: Colors.transparent, // 클릭 유지시 백그라운드 색
       ),
       home: const MainNavigationScreen(),
     );
