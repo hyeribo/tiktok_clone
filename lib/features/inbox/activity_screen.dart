@@ -40,9 +40,10 @@ class _ActivityScreenState extends State<ActivityScreen>
     }
   ];
 
+  bool _showBarrier = false;
+
   // late을 사용하면 초기화문에서도 this를 참조할 수 있다.
-  late final AnimationController _arrowAnimationController =
-      AnimationController(
+  late final AnimationController _animationController = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 200),
   );
@@ -50,24 +51,34 @@ class _ActivityScreenState extends State<ActivityScreen>
   late final Animation<double> _arrowAnimation = Tween(
     begin: 0.0,
     end: 0.5,
-  ).animate(_arrowAnimationController);
+  ).animate(_animationController);
 
   late final Animation<Offset> _panelAnimation = Tween(
     begin: const Offset(0, -1), // 비율로 봐야함. -1이라면 전체의 100%를 위로 올린다는 뜻
     end: const Offset(0, 0), // Offset.zero와 같음
-  ).animate(_arrowAnimationController);
+  ).animate(_animationController);
+
+  late final Animation<Color?> _barrierAnimation = ColorTween(
+    begin: Colors.transparent,
+    end: Colors.black38,
+  ).animate(_animationController);
 
   void _onDismissed(String notification) {
     _notifications.remove(notification);
     setState(() {});
   }
 
-  void _onTitleTap() {
-    if (_arrowAnimationController.isCompleted) {
-      _arrowAnimationController.reverse();
+  void _toggleAnimations() async {
+    if (_animationController.isCompleted) {
+      // await을 적는 이유: 애니메이션이 끝나고 난 후에 barrier를 사라지게 하기 위해. (barrier가 사라지는 애니메이션도 적용시키기 위해)
+      await _animationController.reverse();
     } else {
-      _arrowAnimationController.forward();
+      // barrier가 보여질때는 await이 없어야 애니메이션이 보인다.
+      _animationController.forward();
     }
+    setState(() {
+      _showBarrier = !_showBarrier;
+    });
   }
 
   @override
@@ -75,7 +86,7 @@ class _ActivityScreenState extends State<ActivityScreen>
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onTap: _onTitleTap,
+          onTap: _toggleAnimations,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -190,6 +201,12 @@ class _ActivityScreenState extends State<ActivityScreen>
                 ),
             ],
           ),
+          if (_showBarrier)
+            AnimatedModalBarrier(
+              color: _barrierAnimation,
+              dismissible: true,
+              onDismiss: _toggleAnimations,
+            ),
           SlideTransition(
             position: _panelAnimation,
             child: Container(
@@ -230,7 +247,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
