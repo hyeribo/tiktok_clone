@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/inbox/activity_screen.dart';
+import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
 
 void main() {
   runApp(const TikTokApp());
@@ -33,7 +33,7 @@ class TikTokApp extends StatelessWidget {
         splashColor: Colors.transparent, // 클릭시 애니메이션 색
         highlightColor: Colors.transparent, // 클릭 유지시 백그라운드 색
       ),
-      home: const ActivityScreen(),
+      home: const MainNavigationScreen(),
     );
   }
 }
