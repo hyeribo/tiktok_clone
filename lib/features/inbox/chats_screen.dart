@@ -12,9 +12,12 @@ class ChatsScreen extends StatefulWidget {
 class _ChatsScreenState extends State<ChatsScreen> {
   final GlobalKey<AnimatedListState> _key = GlobalKey<AnimatedListState>();
 
+  final List<int> _items = [];
+
   void _addItem() {
     if (_key.currentState != null) {
-      _key.currentState!.insertItem(0);
+      _key.currentState!.insertItem(_items.length);
+      _items.add(_items.length);
     }
   }
 
