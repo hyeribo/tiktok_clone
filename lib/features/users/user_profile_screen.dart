@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -14,70 +16,173 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
-          pinned: true, // 스크롤을 내려도 flexibleSpace가 사라지지 않음
-          stretch: true, // stretchMode를 사용하기 위해 true로 설정
-          backgroundColor: Colors.teal,
-          elevation: 1,
-          collapsedHeight: 80,
-          expandedHeight: 200,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Image.asset(
-              "assets/images/placeholder.jpeg",
-              fit: BoxFit.cover,
+          title: const Text('Hyeri'),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const FaIcon(FontAwesomeIcons.gear, size: Sizes.size20),
             ),
-            title: const Text('User Profile'),
-            stretchModes: const [
-              StretchMode.blurBackground,
-              StretchMode.zoomBackground,
-              StretchMode.fadeTitle,
-            ],
-          ),
+          ],
         ),
         SliverToBoxAdapter(
-          // 보통의 widget들을 렌더링할때 씀
           child: Column(
-            children: const [
-              CircleAvatar(
-                backgroundColor: Colors.red,
-                radius: 20,
+            children: [
+              const CircleAvatar(
+                radius: 50,
+                foregroundImage: NetworkImage(
+                  "https://avatars.githubusercontent.com/u/29244883?v=4",
+                ),
+                child: Text("Hyeri"),
               ),
+              Gaps.v20,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "@Hyeri",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: Sizes.size18,
+                    ),
+                  ),
+                  Gaps.h5,
+                  FaIcon(
+                    FontAwesomeIcons.solidCircleCheck,
+                    size: Sizes.size16,
+                    color: Colors.blue.shade500,
+                  ),
+                ],
+              ),
+              Gaps.v24,
+              SizedBox(
+                height: Sizes
+                    .size48, // VerticalDivider를 사용하려면 부모요소의 height가 정해져있어야한다.
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        const Text(
+                          "97",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: Sizes.size18,
+                          ),
+                        ),
+                        Gaps.v3,
+                        Text(
+                          "Following",
+                          style: TextStyle(
+                            color: Colors.grey.shade500,
+                          ),
+                        ),
+                      ],
+                    ),
+                    VerticalDivider(
+                      width: Sizes.size32,
+                      thickness: Sizes.size1,
+                      color: Colors.grey.shade400,
+                      indent: Sizes.size14,
+                      endIndent: Sizes.size14,
+                    ),
+                    Column(
+                      children: [
+                        const Text(
+                          "10M",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: Sizes.size18,
+                          ),
+                        ),
+                        Gaps.v3,
+                        Text(
+                          "Followers",
+                          style: TextStyle(
+                            color: Colors.grey.shade500,
+                          ),
+                        ),
+                      ],
+                    ),
+                    VerticalDivider(
+                      width: Sizes.size32,
+                      thickness: Sizes.size1,
+                      color: Colors.grey.shade400,
+                      indent: Sizes.size14,
+                      endIndent: Sizes.size14,
+                    ),
+                    Column(
+                      children: [
+                        const Text(
+                          "149.3M",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: Sizes.size18,
+                          ),
+                        ),
+                        Gaps.v3,
+                        Text(
+                          "Likes",
+                          style: TextStyle(
+                            color: Colors.grey.shade500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Gaps.v14,
+              FractionallySizedBox(
+                // 부모의 너비와 높이에 의존해서 너비와 높이를 가진다.
+                widthFactor: 0.33,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: Sizes.size12,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(
+                      Sizes.size4,
+                    ),
+                  ),
+                  child: const Text(
+                    'Follow',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              Gaps.v14,
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: Sizes.size32),
+                child: Text(
+                  "All highlights and where to watch live matches on FIFA+ I wonder how it would look",
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Gaps.v14,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  FaIcon(
+                    FontAwesomeIcons.link,
+                    size: Sizes.size12,
+                  ),
+                  Gaps.h4,
+                  Text(
+                    "https://nomadcoders.co",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+              Gaps.v5,
             ],
           ),
-        ),
-        SliverFixedExtentList(
-          delegate: SliverChildBuilderDelegate(
-            childCount: 50,
-            (context, index) => Container(
-              color: Colors.amber[100 * (index % 9)],
-              child: Align(
-                alignment: Alignment.center,
-                child: Text("item $index"),
-              ),
-            ),
-          ),
-          itemExtent: 100,
-        ),
-        SliverPersistentHeader(
-          delegate: CustomDelegate(),
-          pinned: true,
-        ),
-        SliverGrid(
-          delegate: SliverChildBuilderDelegate(
-            childCount: 50,
-            (context, index) => Container(
-              color: Colors.blue[100 * (index % 9)],
-              child: Align(
-                alignment: Alignment.center,
-                child: Text("item $index"),
-              ),
-            ),
-          ),
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              // 허용된만큼의 무한한 grid를 생성해줌
-              maxCrossAxisExtent: 100,
-              mainAxisSpacing: Sizes.size20,
-              crossAxisSpacing: Sizes.size20,
-              childAspectRatio: 1),
         ),
       ],
     );
