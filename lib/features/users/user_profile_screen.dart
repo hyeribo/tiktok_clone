@@ -13,6 +13,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
+          floating: true,
+          stretch: true,
           // title: const Text('User Profile'),
           backgroundColor: Colors.teal,
           elevation: 1,
@@ -24,6 +26,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               fit: BoxFit.cover,
             ),
             title: const Text('User Profile'),
+            stretchModes: const [
+              StretchMode.blurBackground,
+              StretchMode.fadeTitle,
+              StretchMode.zoomBackground,
+            ],
           ),
         ),
       ],
