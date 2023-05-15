@@ -33,6 +33,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             ],
           ),
         ),
+        SliverToBoxAdapter(
+          // 보통의 widget들을 렌더링할때 씀
+          child: Column(
+            children: const [
+              CircleAvatar(
+                backgroundColor: Colors.red,
+                radius: 20,
+              ),
+            ],
+          ),
+        ),
         SliverFixedExtentList(
           delegate: SliverChildBuilderDelegate(
             childCount: 50,
