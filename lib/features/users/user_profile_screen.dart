@@ -15,6 +15,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         SliverAppBar(
           floating: true,
           stretch: true,
+          pinned: true,
           // title: const Text('User Profile'),
           backgroundColor: Colors.teal,
           elevation: 1,
@@ -28,7 +29,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             title: const Text('User Profile'),
             stretchModes: const [
               StretchMode.blurBackground,
-              StretchMode.fadeTitle,
               StretchMode.zoomBackground,
             ],
           ),
