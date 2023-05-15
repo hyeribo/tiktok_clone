@@ -66,7 +66,8 @@ class _VideoPostState extends State<VideoPost>
     super.dispose();
   }
 
-  void _onVisibliityChanged(VisibilityInfo info) {
+  void _onVisiblityChanged(VisibilityInfo info) {
+    if (!mounted) return;
     if (info.visibleFraction == 1 &&
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
@@ -109,7 +110,7 @@ class _VideoPostState extends State<VideoPost>
   Widget build(BuildContext context) {
     return VisibilityDetector(
       key: Key("${widget.index}"),
-      onVisibilityChanged: _onVisibliityChanged,
+      onVisibilityChanged: _onVisiblityChanged,
       child: Stack(children: [
         Positioned.fill(
           child: _videoPlayerController.value.isInitialized
