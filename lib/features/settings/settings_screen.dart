@@ -1,7 +1,24 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  bool _notifications = false;
+
+  void _onNotificationsChanged(bool? newValue) {
+    if (newValue == null) {
+      return;
+    }
+    setState(() {
+      _notifications = newValue;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,44 +28,40 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          ListTile(
-            onTap: () async {
-              final date = await showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(1980),
-                lastDate: DateTime(2030),
-              );
-              print(date);
-
-              final time = await showTimePicker(
-                  context: context, initialTime: TimeOfDay.now());
-              print(time);
-
-              final booking = await showDateRangePicker(
-                context: context,
-                firstDate: DateTime(1980),
-                lastDate: DateTime(2030),
-                builder: (context, child) {
-                  // appBar의 색깔때문에 상단헤더가 보이지 않아서, builder를 통해 wrapper 모양을 바꿔준다.
-                  return Theme(
-                    data: ThemeData(
-                      appBarTheme: const AppBarTheme(
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.black),
-                    ),
-                    child: child!,
-                  );
-                },
-              );
-              print(booking);
-            },
-            title: const Text(
-              "What is your birthday?",
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+          SwitchListTile.adaptive(
+            // 적응형 위젯. 사용중인 OS 따라 다르게 나옴. 적응형 위젯을 사용하는걸 추천
+            value: _notifications,
+            onChanged: _onNotificationsChanged,
+            title: const Text("Enable notifications"),
+            subtitle: const Text("Enable notifications"),
+          ),
+          Switch.adaptive(
+            // 적응형 위젯. 사용중인 OS 따라 다르게 나옴
+            value: _notifications,
+            onChanged: _onNotificationsChanged,
+          ),
+          CupertinoSwitch(
+            value: _notifications,
+            onChanged: _onNotificationsChanged,
+          ),
+          Switch(
+            value: _notifications,
+            onChanged: _onNotificationsChanged,
+          ),
+          SwitchListTile(
+            value: _notifications,
+            onChanged: _onNotificationsChanged,
+            title: const Text("Enable notifications"),
+          ),
+          Checkbox(
+            value: _notifications,
+            onChanged: _onNotificationsChanged,
+          ),
+          CheckboxListTile(
+            value: _notifications,
+            onChanged: _onNotificationsChanged,
+            title: const Text("Enable notifications"),
+            activeColor: Colors.black,
           ),
         ],
       ),
