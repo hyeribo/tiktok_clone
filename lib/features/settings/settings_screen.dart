@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -10,14 +9,26 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Settings"),
       ),
-      body: Column(
-        children: const [
-          CupertinoActivityIndicator(
-            radius: 40,
-          ), // iOS 모양 로딩
-          CircularProgressIndicator(), // Android 모양 로딩
-          CircularProgressIndicator
-              .adaptive(), // 유저가 어떤 플랫폼에 있는지 확인하고 플랫폼에 따라 다른걸 보여줌
+      body: ListView(
+        children: [
+          ListTile(
+            // showAboutDialog: 이미 존재하는 함수.
+            // VIEW LICENSES를 클릭하면 현재 사용중인 모든 오픈소스 라이브러리 관련 라이센스의 정보가 나온다.
+            // 어플을 출시할때 꼭 어플이 사용하는 오픈소스 라이센스를 고지해야한다. 이걸 전부 만들어줌.
+            onTap: () => showAboutDialog(
+                context: context,
+                applicationVersion: "1.0",
+                applicationLegalese:
+                    "All rights reserved. Please don't copy me."),
+            title: const Text(
+              "About",
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            subtitle: const Text("About this app..."),
+          ),
+          const AboutListTile(), // 위 ListTile의 간소화
         ],
       ),
     );
