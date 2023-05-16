@@ -83,6 +83,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(color: Colors.red),
             ),
             onTap: () {
+              // Modal과 Dialog의 차이점 : 겉 배경을 클릭했을때 사라지는지 안사라지는지. Modal은 사라짐.
+              // 유저가 버튼을 반드시 클릭하길 원하면 Dialog(CupertinoAlertDialog), 아니면 Modal(showCupertinoModalPopup) 사용
               showCupertinoDialog(
                 context: context,
                 builder: (context) => CupertinoAlertDialog(
@@ -125,6 +127,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     TextButton(
                       onPressed: () => Navigator.of(context).pop(),
+                      child: const Text("Yes"),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          ListTile(
+            // Android 버전 로그아웃
+            title: const Text(
+              "Log out (iOS / Android)",
+              style: TextStyle(color: Colors.red),
+            ),
+            onTap: () {
+              showCupertinoModalPopup(
+                context: context,
+                builder: (context) => CupertinoActionSheet(
+                  // 밖을 누르면 사라짐
+                  title: const Text("Are you sure?"),
+                  message: const Text("Please don't go"),
+                  actions: [
+                    CupertinoActionSheetAction(
+                      isDefaultAction: true,
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text("No"),
+                    ),
+                    CupertinoActionSheetAction(
+                      onPressed: () => Navigator.of(context).pop(),
+                      isDestructiveAction: true,
                       child: const Text("Yes"),
                     ),
                   ],
