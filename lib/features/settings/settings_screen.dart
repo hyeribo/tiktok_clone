@@ -12,23 +12,44 @@ class SettingsScreen extends StatelessWidget {
       body: ListView(
         children: [
           ListTile(
-            // showAboutDialog: 이미 존재하는 함수.
-            // VIEW LICENSES를 클릭하면 현재 사용중인 모든 오픈소스 라이브러리 관련 라이센스의 정보가 나온다.
-            // 어플을 출시할때 꼭 어플이 사용하는 오픈소스 라이센스를 고지해야한다. 이걸 전부 만들어줌.
-            onTap: () => showAboutDialog(
+            onTap: () async {
+              final date = await showDatePicker(
                 context: context,
-                applicationVersion: "1.0",
-                applicationLegalese:
-                    "All rights reserved. Please don't copy me."),
+                initialDate: DateTime.now(),
+                firstDate: DateTime(1980),
+                lastDate: DateTime(2030),
+              );
+              print(date);
+
+              final time = await showTimePicker(
+                  context: context, initialTime: TimeOfDay.now());
+              print(time);
+
+              final booking = await showDateRangePicker(
+                context: context,
+                firstDate: DateTime(1980),
+                lastDate: DateTime(2030),
+                builder: (context, child) {
+                  // appBar의 색깔때문에 상단헤더가 보이지 않아서, builder를 통해 wrapper 모양을 바꿔준다.
+                  return Theme(
+                    data: ThemeData(
+                      appBarTheme: const AppBarTheme(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.black),
+                    ),
+                    child: child!,
+                  );
+                },
+              );
+              print(booking);
+            },
             title: const Text(
-              "About",
+              "What is your birthday?",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
               ),
             ),
-            subtitle: const Text("About this app..."),
           ),
-          const AboutListTile(), // 위 ListTile의 간소화
         ],
       ),
     );
