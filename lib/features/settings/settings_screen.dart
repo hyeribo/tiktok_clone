@@ -9,6 +9,11 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Settings"),
       ),
+      body: Column(
+        children: const [
+          CloseButton(),
+        ],
+      ),
     );
   }
 }
