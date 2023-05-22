@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
+import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
 
 void main() async {
   // 앱이 시작하기 전에 state를 어떤식으로든 바꾸고 싶다면
@@ -47,7 +47,7 @@ class TikTokApp extends StatelessWidget {
         splashColor: Colors.transparent, // 클릭시 애니메이션 색
         highlightColor: Colors.transparent, // 클릭 유지시 백그라운드 색
       ),
-      home: const SignUpScreen(),
+      home: const MainNavigationScreen(),
     );
   }
 }

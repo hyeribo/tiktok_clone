@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
@@ -40,8 +41,13 @@ class _VideoPostState extends State<VideoPost>
   }
 
   void _initVideoPlayer() async {
+    // 브라우저에서는 화면 로딩과 동시에 음성이 들어간 영상을 재생할 수 없다. (새로고침시에 해당)
+    // 사용자를 놀래키는 등의 문제 때문에 정책상 막아놨기 때문에 에러가 발생한다.
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true);
+    if (kIsWeb) {
+      await _videoPlayerController.setVolume(0);
+    }
     // _videoPlayerController.play();
     setState(() {});
     _videoPlayerController.addListener(_onVideoChange);
