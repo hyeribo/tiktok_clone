@@ -58,19 +58,22 @@ class LayoutBuilderCodeLab extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: LayoutBuilder(
-        // constraints: BoxConstraints. box가 커질 수 있는 최대치 한계. Container가 커질 수 있는 최대 크기를 알려준다.
-        // MediaQuery의 size와 constraints.maxWidth가 같아 보이는 이유는, LayoutBuilder를 Scaffold의 body로 그리고 있기 때문이다.
-        builder: (context, constraints) => Container(
-          width: constraints.maxWidth,
-          height: constraints.maxHeight,
-          color: Colors.teal,
-          child: Center(
-            child: Text(
-              "${size.width} / ${constraints.maxWidth}",
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 98,
+      body: SizedBox(
+        width: size.width / 2,
+        child: LayoutBuilder(
+          // constraints: BoxConstraints. box가 커질 수 있는 최대치 한계. Container가 커질 수 있는 최대 크기를 알려준다.
+          // MediaQuery의 size와 constraints.maxWidth가 같아 보이는 이유는, LayoutBuilder를 Scaffold의 body로 그리고 있기 때문이다.
+          builder: (context, constraints) => Container(
+            width: constraints.maxWidth,
+            height: constraints.maxHeight,
+            color: Colors.teal,
+            child: Center(
+              child: Text(
+                "${size.width} / ${constraints.maxWidth}",
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 98,
+                ),
               ),
             ),
           ),
