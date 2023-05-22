@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
 
-void main() {
+void main() async {
+  // 앱이 시작하기 전에 state를 어떤식으로든 바꾸고 싶다면
+  // engine자체와 engine과 widget의 연결을 초기화 시켜야한다.
+  // 아래 코드를 작성하면 모든 widget들이 engine과 연결된것을 보장해준다.
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp, // 세로모드 고정
+  ]);
+
   runApp(const TikTokApp());
 }
 
