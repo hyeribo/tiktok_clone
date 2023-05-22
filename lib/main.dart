@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
+import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
 
 void main() async {
   // 앱이 시작하기 전에 state를 어떤식으로든 바꾸고 싶다면
@@ -28,7 +28,10 @@ class TikTokApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false, // 화면에 debug 모드 배너 제거
       title: 'TikTok Clone',
+      themeMode: ThemeMode
+          .system, // light or dark: 사용자의 핸드폰 설정에 관계없이 모드 강제. system: 사용자의 핸드폰 설정에 맞춤
       theme: ThemeData(
+        brightness: Brightness.light,
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(
           foregroundColor: Colors.black,
@@ -47,7 +50,12 @@ class TikTokApp extends StatelessWidget {
         splashColor: Colors.transparent, // 클릭시 애니메이션 색
         highlightColor: Colors.transparent, // 클릭 유지시 백그라운드 색
       ),
-      home: const MainNavigationScreen(),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: Colors.black,
+        primaryColor: const Color(0xFFE9435A),
+      ),
+      home: const SignUpScreen(),
     );
   }
 }
