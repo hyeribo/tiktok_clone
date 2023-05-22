@@ -13,6 +13,9 @@ void main() async {
     DeviceOrientation.portraitUp, // 세로모드 고정
   ]);
 
+  // status bar 색상 설정 (꼭 main 함수에서 실행시킬 필요는 없다.)
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+
   runApp(const TikTokApp());
 }
 
