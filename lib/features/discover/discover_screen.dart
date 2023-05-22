@@ -50,7 +50,6 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
     // padding(어떤 부분이 다른것에 가려지고 있는지) 등의 유용한 값이 많다.
     // widget of the week의 MediaQuery 영상 보기
     final width = MediaQuery.of(context).size.width;
-    print(width);
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
