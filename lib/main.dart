@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
 
 void main() async {
   // 앱이 시작하기 전에 state를 어떤식으로든 바꾸고 싶다면
@@ -47,7 +46,36 @@ class TikTokApp extends StatelessWidget {
         splashColor: Colors.transparent, // 클릭시 애니메이션 색
         highlightColor: Colors.transparent, // 클릭 유지시 백그라운드 색
       ),
-      home: const MainNavigationScreen(),
+      home: const LayoutBuilderCodeLab(),
+    );
+  }
+}
+
+class LayoutBuilderCodeLab extends StatelessWidget {
+  const LayoutBuilderCodeLab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Scaffold(
+      body: LayoutBuilder(
+        // constraints: BoxConstraints. box가 커질 수 있는 최대치 한계. Container가 커질 수 있는 최대 크기를 알려준다.
+        // MediaQuery의 size와 constraints.maxWidth가 같아 보이는 이유는, LayoutBuilder를 Scaffold의 body로 그리고 있기 때문이다.
+        builder: (context, constraints) => Container(
+          width: constraints.maxWidth,
+          height: constraints.maxHeight,
+          color: Colors.teal,
+          child: Center(
+            child: Text(
+              "${size.width} / ${constraints.maxWidth}",
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 98,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
