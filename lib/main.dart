@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
 
@@ -32,7 +31,7 @@ class TikTokApp extends StatelessWidget {
       themeMode: ThemeMode
           .system, // light or dark: 사용자의 핸드폰 설정에 관계없이 모드 강제. system: 사용자의 핸드폰 설정에 맞춤
       theme: ThemeData(
-        textTheme: GoogleFonts.itimTextTheme(),
+        textTheme: Typography.blackMountainView,
         brightness: Brightness.light,
         scaffoldBackgroundColor: Colors.white,
         bottomAppBarTheme: BottomAppBarTheme(
@@ -56,9 +55,7 @@ class TikTokApp extends StatelessWidget {
         highlightColor: Colors.transparent, // 클릭 유지시 백그라운드 색
       ),
       darkTheme: ThemeData(
-        textTheme: GoogleFonts.itimTextTheme(
-          ThemeData(brightness: Brightness.dark).textTheme,
-        ),
+        textTheme: Typography.whiteMountainView,
         brightness: Brightness.dark,
         scaffoldBackgroundColor: Colors.black,
         bottomAppBarTheme: BottomAppBarTheme(
