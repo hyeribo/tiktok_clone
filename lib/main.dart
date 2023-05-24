@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
+import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
 
 void main() async {
   // 앱이 시작하기 전에 state를 어떤식으로든 바꾸고 싶다면
@@ -31,6 +31,7 @@ class TikTokApp extends StatelessWidget {
       themeMode: ThemeMode
           .system, // light or dark: 사용자의 핸드폰 설정에 관계없이 모드 강제. system: 사용자의 핸드폰 설정에 맞춤
       theme: ThemeData(
+        useMaterial3: true,
         textTheme: Typography.blackMountainView,
         brightness: Brightness.light,
         scaffoldBackgroundColor: Colors.white,
@@ -40,6 +41,7 @@ class TikTokApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(
           foregroundColor: Colors.black,
           backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
           elevation: 0,
           titleTextStyle: TextStyle(
             color: Colors.black,
@@ -63,7 +65,10 @@ class TikTokApp extends StatelessWidget {
         ),
       ),
       darkTheme: ThemeData(
-        tabBarTheme: const TabBarTheme(
+        useMaterial3: true,
+        tabBarTheme: TabBarTheme(
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.grey.shade700,
           indicatorColor: Colors.white,
         ),
         textSelectionTheme: const TextSelectionThemeData(
@@ -74,13 +79,24 @@ class TikTokApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.black,
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.grey.shade900,
+          titleTextStyle: const TextStyle(
+            color: Colors.white,
+            fontSize: Sizes.size16 + Sizes.size2,
+            fontWeight: FontWeight.w600,
+          ),
+          actionsIconTheme: IconThemeData(
+            color: Colors.grey.shade100,
+          ),
+          iconTheme: IconThemeData(
+            color: Colors.grey.shade100,
+          ),
         ),
         bottomAppBarTheme: BottomAppBarTheme(
           color: Colors.grey.shade900,
         ),
         primaryColor: const Color(0xFFE9435A),
       ),
-      home: const MainNavigationScreen(),
+      home: const SignUpScreen(),
     );
   }
 }
