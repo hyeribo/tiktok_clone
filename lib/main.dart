@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
-import 'package:flutter_gen/gen_l10n/intl_generated.dart';
+import 'package:tiktok_clone/generated/l10n.dart';
 
 void main() async {
   // 앱이 시작하기 전에 state를 어떤식으로든 바꾸고 싶다면
@@ -31,9 +32,17 @@ class TikTokApp extends StatelessWidget {
       title: 'TikTok Clone',
       // flutter는 텍스트가 기본적으로 들어있는 위젯이 있다. (예: licenses)
       // 이런 위젯들은 이미 번역이 되어있으므로 include 시킨다.
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate, // flutter 기본 위젯을 위한 번역
+        GlobalCupertinoLocalizations.delegate, // flutter 기본 위젯을 위한 번역
+        GlobalWidgetsLocalizations.delegate, // flutter 기본 위젯을 위한 번역
+      ],
       // IANA language registry 에서 Subtag 국가 코드 보기
-      supportedLocales: AppLocalizations.supportedLocales,
+      supportedLocales: const [
+        Locale('en'),
+        Locale('ko'),
+      ],
       themeMode: ThemeMode
           .system, // light or dark: 사용자의 핸드폰 설정에 관계없이 모드 강제. system: 사용자의 핸드폰 설정에 맞춤
       theme: ThemeData(
