@@ -64,6 +64,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  # generate: 코드를 생성하는데 도움을 줌.
+  generate: true
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

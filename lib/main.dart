@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/settings/settings_screen.dart';
+import 'package:flutter_gen/gen_l10n/intl_generated.dart';
 
 void main() async {
   // 앱이 시작하기 전에 state를 어떤식으로든 바꾸고 싶다면
@@ -32,9 +33,10 @@ class TikTokApp extends StatelessWidget {
       // flutter는 텍스트가 기본적으로 들어있는 위젯이 있다. (예: licenses)
       // 이런 위젯들은 이미 번역이 되어있으므로 include 시킨다.
       localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
+        AppLocalizations.delegate, // 커스텀 위젯을 위한 번역
+        GlobalMaterialLocalizations.delegate, // flutter 기본 위젯을 위한 번역
+        GlobalCupertinoLocalizations.delegate, // flutter 기본 위젯을 위한 번역
+        GlobalWidgetsLocalizations.delegate, // flutter 기본 위젯을 위한 번역
       ],
       // IANA language registry 에서 Subtag 국가 코드 보기
       supportedLocales: const [

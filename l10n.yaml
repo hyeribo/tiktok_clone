@@ -1,0 +1,8 @@
+# 번역파일 위치
+arb-dir: lib/intl
+
+# 마스터 파일 (기본 언어)
+template-arb-file: intl_en.arb
+
+# 생성된 번역 코드가 저장될 파일 이름
+output-localization-file: intl_generated.dart
