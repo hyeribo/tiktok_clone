@@ -18,7 +18,7 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 4;
 
   void _onTap(int index) {
     setState(() {
@@ -45,7 +45,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: _selectedIndex == 0
+      backgroundColor: _selectedIndex == 0 || isDark
           ? Colors.black
           : Colors
               .white, //Home 화면에서 화면을 아래로 잡아당겨 indicator가 나타날때의 배경화면 색을 검정색으로 변경.
