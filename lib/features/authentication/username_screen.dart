@@ -38,10 +38,10 @@ class _UsernameScreenState extends State<UsernameScreen> {
     // StatefulWidget 에서는 어디서든 context를 사용할수 있기 때문에,
     // 메서드의 인자로 context를 받지 않아도 된다.
     if (_username.isEmpty) return;
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const EmailScreen(),
-      ),
+    Navigator.pushNamed(
+      context,
+      EmailScreen.routeName,
+      arguments: EmailScreenArgs(username: _username),
     );
   }
 
