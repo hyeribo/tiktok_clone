@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/login_screen.dart';
 import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
+import 'package:tiktok_clone/features/authentication/username_screen.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 
 void main() async {
@@ -29,90 +31,96 @@ class TikTokApp extends StatelessWidget {
   Widget build(BuildContext context) {
     S.load(const Locale("en")); // locale 강제하기
     return MaterialApp(
-      debugShowCheckedModeBanner: false, // 화면에 debug 모드 배너 제거
-      title: 'TikTok Clone',
-      // flutter는 텍스트가 기본적으로 들어있는 위젯이 있다. (예: licenses)
-      // 이런 위젯들은 이미 번역이 되어있으므로 include 시킨다.
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate, // flutter 기본 위젯을 위한 번역
-        GlobalCupertinoLocalizations.delegate, // flutter 기본 위젯을 위한 번역
-        GlobalWidgetsLocalizations.delegate, // flutter 기본 위젯을 위한 번역
-      ],
-      // IANA language registry 에서 Subtag 국가 코드 보기
-      supportedLocales: const [
-        Locale('en'),
-        Locale('ko'),
-      ],
-      themeMode: ThemeMode
-          .system, // light or dark: 사용자의 핸드폰 설정에 관계없이 모드 강제. system: 사용자의 핸드폰 설정에 맞춤
-      theme: ThemeData(
-        useMaterial3: true,
-        textTheme: Typography.blackMountainView,
-        brightness: Brightness.light,
-        scaffoldBackgroundColor: Colors.white,
-        bottomAppBarTheme: BottomAppBarTheme(
-          color: Colors.grey.shade50,
-        ),
-        appBarTheme: const AppBarTheme(
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-          elevation: 0,
-          titleTextStyle: TextStyle(
-            color: Colors.black,
-            fontSize: Sizes.size16 + Sizes.size2,
-            fontWeight: FontWeight.w600,
+        debugShowCheckedModeBanner: false, // 화면에 debug 모드 배너 제거
+        title: 'TikTok Clone',
+        // flutter는 텍스트가 기본적으로 들어있는 위젯이 있다. (예: licenses)
+        // 이런 위젯들은 이미 번역이 되어있으므로 include 시킨다.
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate, // flutter 기본 위젯을 위한 번역
+          GlobalCupertinoLocalizations.delegate, // flutter 기본 위젯을 위한 번역
+          GlobalWidgetsLocalizations.delegate, // flutter 기본 위젯을 위한 번역
+        ],
+        // IANA language registry 에서 Subtag 국가 코드 보기
+        supportedLocales: const [
+          Locale('en'),
+          Locale('ko'),
+        ],
+        themeMode: ThemeMode
+            .system, // light or dark: 사용자의 핸드폰 설정에 관계없이 모드 강제. system: 사용자의 핸드폰 설정에 맞춤
+        theme: ThemeData(
+          useMaterial3: true,
+          textTheme: Typography.blackMountainView,
+          brightness: Brightness.light,
+          scaffoldBackgroundColor: Colors.white,
+          bottomAppBarTheme: BottomAppBarTheme(
+            color: Colors.grey.shade50,
+          ),
+          appBarTheme: const AppBarTheme(
+            foregroundColor: Colors.black,
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.white,
+            elevation: 0,
+            titleTextStyle: TextStyle(
+              color: Colors.black,
+              fontSize: Sizes.size16 + Sizes.size2,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          tabBarTheme: TabBarTheme(
+            labelColor: Colors.black,
+            unselectedLabelColor: Colors.grey.shade500,
+            indicatorColor: Colors.black,
+          ),
+          primaryColor: const Color(0xFFE9435A),
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: Color(0xFFE9435A),
+          ),
+          splashColor: Colors.transparent, // 클릭시 애니메이션 색
+          highlightColor: Colors.transparent, // 클릭 유지시 백그라운드 색
+          listTileTheme: const ListTileThemeData(
+            iconColor: Colors.black,
           ),
         ),
-        tabBarTheme: TabBarTheme(
-          labelColor: Colors.black,
-          unselectedLabelColor: Colors.grey.shade500,
-          indicatorColor: Colors.black,
-        ),
-        primaryColor: const Color(0xFFE9435A),
-        textSelectionTheme: const TextSelectionThemeData(
-          cursorColor: Color(0xFFE9435A),
-        ),
-        splashColor: Colors.transparent, // 클릭시 애니메이션 색
-        highlightColor: Colors.transparent, // 클릭 유지시 백그라운드 색
-        listTileTheme: const ListTileThemeData(
-          iconColor: Colors.black,
-        ),
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        tabBarTheme: TabBarTheme(
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.grey.shade700,
-          indicatorColor: Colors.white,
-        ),
-        textSelectionTheme: const TextSelectionThemeData(
-          cursorColor: Color(0xFFE9435A),
-        ),
-        textTheme: Typography.whiteMountainView,
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: Colors.black,
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.grey.shade900,
-          titleTextStyle: const TextStyle(
-            color: Colors.white,
-            fontSize: Sizes.size16 + Sizes.size2,
-            fontWeight: FontWeight.w600,
+        darkTheme: ThemeData(
+          useMaterial3: true,
+          tabBarTheme: TabBarTheme(
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.grey.shade700,
+            indicatorColor: Colors.white,
           ),
-          actionsIconTheme: IconThemeData(
-            color: Colors.grey.shade100,
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: Color(0xFFE9435A),
           ),
-          iconTheme: IconThemeData(
-            color: Colors.grey.shade100,
+          textTheme: Typography.whiteMountainView,
+          brightness: Brightness.dark,
+          scaffoldBackgroundColor: Colors.black,
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.grey.shade900,
+            titleTextStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: Sizes.size16 + Sizes.size2,
+              fontWeight: FontWeight.w600,
+            ),
+            actionsIconTheme: IconThemeData(
+              color: Colors.grey.shade100,
+            ),
+            iconTheme: IconThemeData(
+              color: Colors.grey.shade100,
+            ),
           ),
+          bottomAppBarTheme: BottomAppBarTheme(
+            color: Colors.grey.shade900,
+          ),
+          primaryColor: const Color(0xFFE9435A),
         ),
-        bottomAppBarTheme: BottomAppBarTheme(
-          color: Colors.grey.shade900,
-        ),
-        primaryColor: const Color(0xFFE9435A),
-      ),
-      home: const SignUpScreen(),
-    );
+        initialRoute: SignUpScreen.routeName,
+        routes: {
+          SignUpScreen.routeName: (context) => const SignUpScreen(),
+          UsernameScreen.routeName: (context) => const UsernameScreen(),
+          LoginScreen.routeName: (context) => const LoginScreen(),
+        }
+        // home: const SignUpScreen(),
+        );
   }
 }
