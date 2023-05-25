@@ -27,6 +27,7 @@ class TikTokApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    S.load(const Locale("en")); // locale 강제하기
     return MaterialApp(
       debugShowCheckedModeBanner: false, // 화면에 debug 모드 배너 제거
       title: 'TikTok Clone',

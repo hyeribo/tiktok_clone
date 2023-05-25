@@ -46,7 +46,7 @@ class SignUpScreen extends StatelessWidget {
                   Opacity(
                     opacity: 0.7,
                     child: Text(
-                      S.of(context).signUpSubtitle,
+                      S.of(context).signUpSubtitle(2),
                       style: const TextStyle(
                         fontSize: Sizes.size16,
                       ),
