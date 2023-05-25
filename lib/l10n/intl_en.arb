@@ -23,5 +23,5 @@
   "emailPasswordButton": "Use email & password",
   "appleButton": "Continue with Apple",
   "alreadyHaveAnAccount": "Already have an account?",
-  "login": "Log in"
+  "login": "Log in {gender, select, male{sir} female{madam} other{human}}"
 }
