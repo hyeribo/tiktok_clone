@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,7 +25,10 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   bool _isSelfieMode = false;
   bool _preparedDispose =
       false; // controller를 dispose하기전에 CameraPreview 위젯을 렌더트리에서 제거해야함
+
   late FlashMode _flashMode;
+  late final bool _noCamera = kDebugMode && Platform.isIOS;
+  bool _isCameraInitialized = false;
 
   late CameraController _cameraController;
 
@@ -48,7 +54,12 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   @override
   void initState() {
     super.initState();
-    initPermissions();
+
+    if (!_noCamera) {
+      initPermissions();
+    } else {
+      _hasPermission = true;
+    }
 
     // 유저가 앱을 벗어나면 알게해줌
     WidgetsBinding.instance.addObserver(this);
@@ -69,7 +80,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (!_hasPermission || !_cameraController.value.isInitialized) return;
+    if (!_hasPermission || !_isCameraInitialized) return;
 
     if (state == AppLifecycleState.paused) {
       _preparedDispose = true;
@@ -103,6 +114,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     await _cameraController.prepareForVideoRecording();
 
     _flashMode = _cameraController.value.flashMode;
+    _isCameraInitialized = true;
 
     setState(() {});
   }
@@ -130,12 +142,14 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   }
 
   Future<void> _setFlashMode(FlashMode newFlashMode) async {
+    if (!_isCameraInitialized) return;
     await _cameraController.setFlashMode(newFlashMode);
     _flashMode = newFlashMode;
     setState(() {});
   }
 
   Future<void> _startRecording(TapDownDetails _) async {
+    if (!_isCameraInitialized) return;
     if (_cameraController.value.isRecordingVideo) {
       return;
     }
@@ -147,6 +161,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   }
 
   Future<void> _stopRecording() async {
+    if (!_isCameraInitialized) return;
     if (!_cameraController.value.isRecordingVideo) {
       return;
     }
@@ -204,28 +219,31 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     return Scaffold(
       backgroundColor: Colors.black,
       body: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: !_hasPermission || !_cameraController.value.isInitialized
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  Text(
-                    "Initializing camera...",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: Sizes.size16,
+          width: MediaQuery.of(context).size.width,
+          child: !_hasPermission
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Text(
+                      "Initializing camera...",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: Sizes.size16,
+                      ),
                     ),
-                  ),
-                  Gaps.v20,
-                  CircularProgressIndicator.adaptive(),
-                ],
-              )
-            : _cameraController.value.isInitialized
-                ? Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      if (!_preparedDispose) CameraPreview(_cameraController),
+                    Gaps.v20,
+                    CircularProgressIndicator.adaptive(),
+                  ],
+                )
+              : Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    if (!_noCamera &&
+                        _cameraController.value.isInitialized &&
+                        _preparedDispose)
+                      CameraPreview(_cameraController),
+                    if (!_noCamera)
                       Positioned(
                         top: Sizes.size20,
                         right: Sizes.size20,
@@ -271,61 +289,58 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                           ],
                         ),
                       ),
-                      Positioned(
-                        width: MediaQuery.of(context).size.width,
-                        bottom: Sizes.size40,
-                        child: Row(
-                          children: [
-                            const Spacer(), // 변형 가능한 공간을 만들어줌
-                            GestureDetector(
-                              onTapDown: _startRecording,
-                              onTapUp: (details) => _stopRecording(),
-                              child: ScaleTransition(
-                                scale: _buttonAnimation,
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: Sizes.size80 + Sizes.size14,
-                                      height: Sizes.size80 + Sizes.size14,
-                                      child: CircularProgressIndicator(
-                                        value:
-                                            _progressAnimationController.value,
-                                        color: Colors.red.shade400,
-                                        strokeWidth: Sizes.size6,
-                                      ),
-                                    ),
-                                    Container(
-                                      width: Sizes.size80,
-                                      height: Sizes.size80,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.red.shade400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
+                    Positioned(
+                      width: MediaQuery.of(context).size.width,
+                      bottom: Sizes.size40,
+                      child: Row(
+                        children: [
+                          const Spacer(), // 변형 가능한 공간을 만들어줌
+                          GestureDetector(
+                            onTapDown: _startRecording,
+                            onTapUp: (details) => _stopRecording(),
+                            child: ScaleTransition(
+                              scale: _buttonAnimation,
+                              child: Stack(
                                 alignment: Alignment.center,
-                                child: IconButton(
-                                  onPressed: _onPickVideoPressed,
-                                  icon: const FaIcon(
-                                    FontAwesomeIcons.image,
-                                    color: Colors.white,
+                                children: [
+                                  SizedBox(
+                                    width: Sizes.size80 + Sizes.size14,
+                                    height: Sizes.size80 + Sizes.size14,
+                                    child: CircularProgressIndicator(
+                                      value: _progressAnimationController.value,
+                                      color: Colors.red.shade400,
+                                      strokeWidth: Sizes.size6,
+                                    ),
                                   ),
+                                  Container(
+                                    width: Sizes.size80,
+                                    height: Sizes.size80,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.red.shade400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: IconButton(
+                                onPressed: _onPickVideoPressed,
+                                icon: const FaIcon(
+                                  FontAwesomeIcons.image,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                      )
-                    ],
-                  )
-                : null,
-      ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                )),
     );
   }
 }
