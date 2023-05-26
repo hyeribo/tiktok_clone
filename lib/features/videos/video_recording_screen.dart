@@ -14,7 +14,8 @@ class VideoRecordingScreen extends StatefulWidget {
 class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
   bool _hasPermission = false;
   bool _deniedPermissions = false;
-  late final CameraController _cameraController;
+  bool _isSelfieMode = false;
+  late CameraController _cameraController;
 
   Future<void> initCamera() async {
     // 기기가 가진 카메라의 목록을 가져온다. (전면, 후면)
@@ -25,7 +26,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
     }
 
     _cameraController = CameraController(
-      cameras[0],
+      cameras[_isSelfieMode ? 1 : 0],
       ResolutionPreset.ultraHigh,
     );
 
@@ -48,6 +49,12 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
     } else {
       _deniedPermissions = true;
     }
+  }
+
+  Future<void> _toggleSelfieMode() async {
+    _isSelfieMode = !_isSelfieMode;
+    await initCamera();
+    setState(() {});
   }
 
   @override
@@ -83,6 +90,15 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
                     alignment: Alignment.center,
                     children: [
                       CameraPreview(_cameraController),
+                      Positioned(
+                        top: Sizes.size20,
+                        left: Sizes.size20,
+                        child: IconButton(
+                          onPressed: _toggleSelfieMode,
+                          color: Colors.white,
+                          icon: const Icon(Icons.cameraswitch),
+                        ),
+                      ),
                     ],
                   )
                 : null,
