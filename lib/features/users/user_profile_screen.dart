@@ -6,7 +6,11 @@ import 'package:tiktok_clone/features/settings/settings_screen.dart';
 import 'package:tiktok_clone/features/users/widgets/persistent_tab_bar.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({super.key});
+  final String username;
+  const UserProfileScreen({
+    super.key,
+    required this.username,
+  });
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -33,7 +37,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
                 SliverAppBar(
-                  title: const Text('Hyeri'),
+                  title: Text(widget.username),
                   actions: [
                     IconButton(
                       onPressed: _onGearPressed,
@@ -57,9 +61,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
-                            "@Hyeri",
-                            style: TextStyle(
+                          Text(
+                            "@${widget.username}",
+                            style: const TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: Sizes.size18,
                             ),
@@ -75,7 +79,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       Gaps.v24,
                       SizedBox(
                         height: Sizes
-                            .size48, // VerticalDivider를 사용하려면 부모요소의 height가 정해져있어야한다.
+                            .size52, // VerticalDivider를 사용하려면 부모요소의 height가 정해져있어야한다.
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
