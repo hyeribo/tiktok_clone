@@ -11,13 +11,53 @@ class VideoRecordingScreen extends StatefulWidget {
   State<VideoRecordingScreen> createState() => _VideoRecordingScreenState();
 }
 
-class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
+// 두개 이상의 애니메이션 컨트롤러가 필요할땐 TickerProviderStateMixin
+class _VideoRecordingScreenState extends State<VideoRecordingScreen>
+    with TickerProviderStateMixin {
   bool _hasPermission = false;
   bool _deniedPermissions = false;
   bool _isSelfieMode = false;
   late FlashMode _flashMode;
 
   late CameraController _cameraController;
+
+  late final AnimationController _buttonAnimationController =
+      AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 200),
+  );
+
+  late final AnimationController _progressAnimationController =
+      AnimationController(
+    vsync: this,
+    duration: const Duration(seconds: 10),
+    lowerBound: 0.0, // 애니메이션의 최소값
+    upperBound: 1.0, // 애니메이션의 최대값
+  );
+
+  late final Animation<double> _buttonAnimation = Tween(
+    begin: 1.0,
+    end: 1.3,
+  ).animate(_buttonAnimationController);
+
+  @override
+  void initState() {
+    super.initState();
+    initPermissions();
+
+    // value가 바뀐걸 알려줌
+    _progressAnimationController.addListener(() {
+      setState(() {});
+    });
+
+    // 애니메이션 상태가 바뀐걸 알려줌
+    _progressAnimationController.addStatusListener((status) {
+      // 10초가 지나고 애니메이션이 끝나면 stopRecording 메서드 호출
+      if (status == AnimationStatus.completed) {
+        _stopRecording();
+      }
+    });
+  }
 
   Future<void> initCamera() async {
     // 기기가 가진 카메라의 목록을 가져온다. (전면, 후면)
@@ -67,10 +107,16 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
     setState(() {});
   }
 
-  @override
-  void initState() {
-    super.initState();
-    initPermissions();
+  void _startRecording(TapDownDetails _) {
+    print("start recording");
+    _buttonAnimationController.forward();
+    _progressAnimationController.forward();
+  }
+
+  void _stopRecording() {
+    print("stop recording");
+    _buttonAnimationController.reverse();
+    _progressAnimationController.reset();
   }
 
   @override
@@ -145,6 +191,37 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
                           ],
                         ),
                       ),
+                      Positioned(
+                          bottom: Sizes.size40,
+                          child: GestureDetector(
+                            onTapDown: _startRecording,
+                            onTapUp: (details) => _stopRecording(),
+                            child: ScaleTransition(
+                              scale: _buttonAnimation,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: Sizes.size80 + Sizes.size14,
+                                    height: Sizes.size80 + Sizes.size14,
+                                    child: CircularProgressIndicator(
+                                      value: _progressAnimationController.value,
+                                      color: Colors.red.shade400,
+                                      strokeWidth: Sizes.size6,
+                                    ),
+                                  ),
+                                  Container(
+                                    width: Sizes.size80,
+                                    height: Sizes.size80,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.red.shade400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ))
                     ],
                   )
                 : null,
