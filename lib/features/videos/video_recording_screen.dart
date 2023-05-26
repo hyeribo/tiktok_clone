@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/video_preview_screen.dart';
 
 class VideoRecordingScreen extends StatefulWidget {
   const VideoRecordingScreen({super.key});
@@ -74,6 +75,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
     await _cameraController.initialize();
 
+    // iOS에서만 필요. iOS에서는 가끔 영상과 오디오의 싱크가 맞지 않는 경우가 생기기 때문
+    await _cameraController.prepareForVideoRecording();
+
     _flashMode = _cameraController.value.flashMode;
   }
 
@@ -107,16 +111,43 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     setState(() {});
   }
 
-  void _startRecording(TapDownDetails _) {
-    print("start recording");
+  Future<void> _startRecording(TapDownDetails _) async {
+    if (_cameraController.value.isRecordingVideo) {
+      return;
+    }
+
+    await _cameraController.startVideoRecording();
+
     _buttonAnimationController.forward();
     _progressAnimationController.forward();
   }
 
-  void _stopRecording() {
-    print("stop recording");
+  Future<void> _stopRecording() async {
+    if (!_cameraController.value.isRecordingVideo) {
+      return;
+    }
     _buttonAnimationController.reverse();
     _progressAnimationController.reset();
+
+    final video = await _cameraController.stopVideoRecording();
+    // print(video.name);
+    // print(video.path);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VideoPreviewScreen(video: video),
+      ),
+    );
+    // await _cameraController.takePicture(); // 마찬가지로 file 받을 수 있음
+  }
+
+  @override
+  void dispose() {
+    _buttonAnimationController.dispose();
+    _progressAnimationController.dispose();
+    _cameraController.dispose();
+    super.dispose();
   }
 
   @override
