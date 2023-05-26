@@ -16,10 +16,12 @@ class VideoRecordingScreen extends StatefulWidget {
 
 // 두개 이상의 애니메이션 컨트롤러가 필요할땐 TickerProviderStateMixin
 class _VideoRecordingScreenState extends State<VideoRecordingScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   bool _hasPermission = false;
   bool _deniedPermissions = false;
   bool _isSelfieMode = false;
+  bool _preparedDispose =
+      false; // controller를 dispose하기전에 CameraPreview 위젯을 렌더트리에서 제거해야함
   late FlashMode _flashMode;
 
   late CameraController _cameraController;
@@ -48,6 +50,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     super.initState();
     initPermissions();
 
+    // 유저가 앱을 벗어나면 알게해줌
+    WidgetsBinding.instance.addObserver(this);
+
     // value가 바뀐걸 알려줌
     _progressAnimationController.addListener(() {
       setState(() {});
@@ -60,6 +65,23 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
         _stopRecording();
       }
     });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (!_hasPermission || !_cameraController.value.isInitialized) return;
+
+    if (state == AppLifecycleState.paused) {
+      _preparedDispose = true;
+      setState(() {});
+      _cameraController.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      _preparedDispose = false;
+      initCamera();
+    }
+    // if (state == AppLifecycleState.resumed) {
+    //   initPermissions();
+    // }
   }
 
   Future<void> initCamera() async {
@@ -81,6 +103,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     await _cameraController.prepareForVideoRecording();
 
     _flashMode = _cameraController.value.flashMode;
+
+    setState(() {});
   }
 
   Future<void> initPermissions() async {
@@ -94,8 +118,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
     if (!cameraDenied && !micDenied) {
       _hasPermission = true;
-      await initCamera();
-      setState(() {});
+      initCamera();
     } else {
       _deniedPermissions = true;
     }
@@ -103,8 +126,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   Future<void> _toggleSelfieMode() async {
     _isSelfieMode = !_isSelfieMode;
-    await initCamera();
-    setState(() {});
+    initCamera();
   }
 
   Future<void> _setFlashMode(FlashMode newFlashMode) async {
@@ -203,7 +225,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                 ? Stack(
                     alignment: Alignment.center,
                     children: [
-                      CameraPreview(_cameraController),
+                      if (!_preparedDispose) CameraPreview(_cameraController),
                       Positioned(
                         top: Sizes.size20,
                         right: Sizes.size20,
