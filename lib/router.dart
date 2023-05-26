@@ -17,6 +17,7 @@ final router = GoRouter(
       builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
+      name: "username_screen", // url 없이 name으로 라우트 이동
       path: UsernameScreen.routeName,
       pageBuilder: (context, state) {
         return CustomTransitionPage(
