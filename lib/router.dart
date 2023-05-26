@@ -27,7 +27,8 @@ final router = GoRouter(
       path: "/users/:username",
       builder: (context, state) {
         final username = state.params["username"];
-        return UserProfileScreen(username: username!);
+        final tab = state.queryParams["show"];
+        return UserProfileScreen(username: username!, tab: tab!);
       },
     ),
   ],
