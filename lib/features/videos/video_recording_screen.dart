@@ -133,6 +133,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     // print(video.name);
     // print(video.path);
 
+    if (!mounted) return;
     Navigator.push(
       context,
       MaterialPageRoute(
